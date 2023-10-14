@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Vocabulary</string>
+    <string name="ru">ru</string>
+    <string name="en">en</string>
+    <string name="show_translete">Показать перевод</string>
+    <string name="next">Следующее слово</string>
+    <string name="add_word">Добавить новое слово</string>
+    <string name="hint_ru">Введите слово по-русски</string>
+    <string name="hint_en">Введите слово по-английски</string>
+    <string name="add">Добавить</string>
+</resources>
