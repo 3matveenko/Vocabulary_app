@@ -8,4 +8,5 @@
     <string name="hint_ru">Введите слово по-русски</string>
     <string name="hint_en">Введите слово по-английски</string>
     <string name="add">Добавить</string>
+    <string name="back">Назад</string>
 </resources>

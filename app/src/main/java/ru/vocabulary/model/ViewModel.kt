@@ -1,10 +1,10 @@
 package ru.vocabulary.model
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.vocabulary.MainActivity.Companion.staticCount
 import ru.vocabulary.MainActivity.Companion.staticword
 
 class ViewModel(private val wordDao: WordDao) : ViewModel() {
@@ -15,15 +15,20 @@ class ViewModel(private val wordDao: WordDao) : ViewModel() {
         }
     }
 
-//    fun count(){
-//        viewModelScope.launch (Dispatchers.IO)  {
-//            wordDao.count()
-//        }
-//    }
+    fun count(){
+        viewModelScope.launch (Dispatchers.IO)  {
+            staticCount = wordDao.count().toString()
+        }
+    }
 
     fun getRandome(){
         viewModelScope.launch(Dispatchers.IO) {
-            staticword = wordDao.getRandomWord()!!
+            try {
+                staticword = wordDao.getRandomWord(staticword.ru)!!
+            } catch (e:Exception){
+
+            }
+
         }
     }
 }

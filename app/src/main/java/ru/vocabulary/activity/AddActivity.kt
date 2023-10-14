@@ -11,6 +11,7 @@ import ru.vocabulary.model.AppDatabase
 import ru.vocabulary.model.ViewModel
 import ru.vocabulary.model.Word
 
+
 class AddActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,9 @@ class AddActivity : AppCompatActivity() {
                 Toast.makeText(this,"Поля должны быть заполнены!",Toast.LENGTH_LONG).show()
             }
 
+        }
+        findViewById<Button>(R.id.back).setOnClickListener {
+            finish()
         }
     }
 }
