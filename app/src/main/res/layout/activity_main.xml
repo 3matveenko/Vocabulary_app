@@ -19,8 +19,9 @@
         android:id="@+id/word_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:gravity="center"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,8 +31,9 @@
         android:id="@+id/word_hidden"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,11 +44,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginTop="150dp"
+        android:backgroundTint="@color/base_color"
         android:gravity="center"
         android:text="@string/show_translete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/word_hidden" />
 
@@ -55,26 +59,30 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/base_color"
         android:gravity="center"
         android:text="@string/next"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/word_hidden" />
+        app:layout_constraintTop_toBottomOf="@+id/show_translete" />
 
     <Button
         android:id="@+id/goToAdd"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/base_color"
         android:gravity="center"
         android:text="@string/add_word"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/next_word" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -85,7 +93,48 @@
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:backgroundTint="@color/base_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/s"
+            app:layout_constraintTop_toBottomOf="@+id/goToAdd"
+            tools:layout_editor_absoluteX="38dp"
+            android:backgroundTint="@color/base_color"/>
+
+        <Button
+            android:id="@+id/po"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/po"
+            app:layout_constraintTop_toBottomOf="@+id/goToAdd"
+            tools:layout_editor_absoluteX="269dp"
+            android:backgroundTint="@color/base_color"/>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

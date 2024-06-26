@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Vocabulary</string>
+    <string name="app_name">Учим слова</string>
     <string name="ru">ru</string>
     <string name="en">en</string>
     <string name="show_translete">Показать перевод</string>
@@ -9,4 +9,9 @@
     <string name="hint_en">Введите слово по-английски</string>
     <string name="add">Добавить</string>
     <string name="back">Назад</string>
+    <string name="delete">Удалить</string>
+    <string name="update">Изменить</string>
+    <string name="do_word">Обновление слова</string>
+    <string name="s">с</string>
+    <string name="po">по</string>
 </resources>

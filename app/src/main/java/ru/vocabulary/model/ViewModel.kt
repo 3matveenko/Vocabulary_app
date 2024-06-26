@@ -21,14 +21,44 @@ class ViewModel(private val wordDao: WordDao) : ViewModel() {
         }
     }
 
-    fun getRandome(){
+//    fun getRandome(){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                staticword = wordDao.getRandomWord(staticword.ru)!!
+//            } catch (e:Exception){
+//
+//            }
+//
+//        }
+//    }
+
+        fun getRandome(dateStart:Long,dateEnd:Long){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                staticword = wordDao.getRandomWord(staticword.ru)!!
+
+                staticword = wordDao.getRandomWordBetweenDates(staticword.ru, dateStart,dateEnd)!!
             } catch (e:Exception){
 
             }
 
+        }
+    }
+    fun update(word: Word){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                wordDao.update(word)
+            } catch (e: Exception){
+
+            }
+        }
+    }
+    fun delete(word: Word){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                wordDao.delete(word)
+            } catch ( e:Exception){
+
+            }
         }
     }
 }
