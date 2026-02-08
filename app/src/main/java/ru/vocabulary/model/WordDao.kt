@@ -18,9 +18,14 @@ interface WordDao {
     @Delete
     fun delete(word: Word)
 
+    @Query("SELECT * FROM words WHERE id = :id")
+    fun getWordById(id: Int): Word?
+
     @Query("SELECT COUNT(*) FROM words")
     fun count():Int
 
+    @Query("SELECT * FROM words WHERE date BETWEEN :startDate AND :endDate")
+    fun getWordsBetweenDates(startDate: Long, endDate: Long): List<Word>
 
     @Query("SELECT * FROM words WHERE ru != :wordRu AND date BETWEEN :startDate AND :endDate ORDER BY RANDOM() LIMIT 1")
     fun getRandomWordBetweenDates(wordRu: String, startDate: Long, endDate: Long): Word?
