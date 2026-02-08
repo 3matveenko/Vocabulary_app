@@ -24,6 +24,12 @@ class ViewModel(private val wordDao: WordDao) : ViewModel() {
         }
     }
 
+    fun insertAll(words: List<Word>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            wordDao.insertAll(words)
+        }
+    }
+
     fun getRandome(dateStart:Long,dateEnd:Long){
         viewModelScope.launch(Dispatchers.IO) {
             if (wordsForSession.isEmpty()) {

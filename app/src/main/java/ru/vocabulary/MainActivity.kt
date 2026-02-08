@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import ru.vocabulary.activity.AddActivity
+import ru.vocabulary.activity.BatchAddActivity
 import ru.vocabulary.model.AppDatabase
 import ru.vocabulary.model.GetSettings
 import ru.vocabulary.model.ViewModel
@@ -74,32 +75,22 @@ class MainActivity : AppCompatActivity() {
         val settings = GetSettings(applicationContext)
         val dateFormat = SimpleDateFormat("d.MM.yyyy", Locale.getDefault())
 
-        // --- Bulletproof self-healing date logic ---
-        fun getValidDateString(key: String): String {
-            val loadedString = settings.load(key)
-            var isInvalid = false
+        // --- Simple and Robust Date Initialization ---
+        val today = dateFormat.format(Date())
 
-            if (loadedString.isNullOrBlank()) {
-                isInvalid = true
-            } else {
-                try {
-                    dateFormat.parse(loadedString)
-                } catch (e: ParseException) {
-                    isInvalid = true
-                }
-            }
-
-            if (isInvalid) {
-                val todayString = dateFormat.format(Date())
-                settings.save(key, todayString)
-                return todayString
-            } else {
-                return loadedString!!
-            }
+        var sDate = settings.load("s")
+        if (sDate.isNullOrBlank()) {
+            sDate = today
+            settings.save("s", sDate)
         }
+        sButton.text = sDate
 
-        sButton.text = getValidDateString("s")
-        poButton.text = getValidDateString("po")
+        var poDate = settings.load("po")
+        if (poDate.isNullOrBlank()) {
+            poDate = today
+            settings.save("po", poDate)
+        }
+        poButton.text = poDate
 
         val switch = findViewById<Switch>(R.id.change_language)
         switch.text = switchToggleValue
@@ -115,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 currentWord?.let {
                     viewModel.delete(it)
                     Toast.makeText(this,"Слово удалено!",Toast.LENGTH_SHORT).show()
-                    getNextWord() // We call getNextWord to refresh the word after deletion
+                    getNextWord()
                     dialog.dismiss()
                 } ?: Toast.makeText(this,"Слово не выбрано!",Toast.LENGTH_SHORT).show()
 
@@ -159,6 +150,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.goToAdd).setOnClickListener{
             startActivity(Intent(this@MainActivity,AddActivity::class.java))
+        }
+        
+        findViewById<Button>(R.id.goToBatchAdd).setOnClickListener{
+            startActivity(Intent(this@MainActivity,BatchAddActivity::class.java))
         }
 
         sButton.setOnClickListener {
@@ -234,22 +229,30 @@ class MainActivity : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("d.MM.yyyy", Locale.getDefault())
         val sButton = findViewById<Button>(R.id.s)
         val poButton = findViewById<Button>(R.id.po)
-        try {
-            // Since onCreate now guarantees the dates are valid, we can parse them safely.
-            val dates = dateFormat.parse(sButton.text.toString())
-            val dateE = dateFormat.parse(poButton.text.toString())
 
-            // A null check is still best practice, even with the safeguard in onCreate.
+        val sDateString = sButton.text.toString()
+        val poDateString = poButton.text.toString()
+
+        // Final safeguard. This check prevents the crash.
+        if (sDateString.isBlank() || poDateString.isBlank()) {
+            Toast.makeText(this, "Пожалуйста, выберите даты", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        try {
+            val dates = dateFormat.parse(sDateString)
+            val dateE = dateFormat.parse(poDateString)
+            
             if (dates != null && dateE != null) {
-                val dateStart = dates.time
-                val dateEnd = dateE.time
-                viewModel.getRandome(dateStart, dateEnd)
+                 val dateStart = dates.time
+                 val dateEnd = dateE.time
+                 viewModel.getRandome(dateStart, dateEnd)
             } else {
-                Toast.makeText(this, "Ошибка: не удалось прочитать даты.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Неверный формат даты.", Toast.LENGTH_SHORT).show()
             }
         } catch (e: ParseException) {
-            // This is now a secondary safeguard and should not be triggered.
-            Toast.makeText(this, "Произошла ошибка с датами. Попробуйте выбрать их заново.", Toast.LENGTH_LONG).show()
+            // The logic in onCreate should prevent this, but this is a final safety net.
+            Toast.makeText(this, "Произошла ошибка. Попробуйте выбрать даты заново.", Toast.LENGTH_LONG).show()
         }
     }
 }

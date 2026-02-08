@@ -1,9 +1,10 @@
 package ru.vocabulary.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "words")
+@Entity(tableName = "words", indices = [Index(value = ["ru"], unique = true)])
 data class Word (
 
     @PrimaryKey(autoGenerate = true)
@@ -12,6 +13,3 @@ data class Word (
     var en:String,
     val date:Long
 )
-
-
-

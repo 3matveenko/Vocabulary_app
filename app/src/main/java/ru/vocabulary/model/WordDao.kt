@@ -3,6 +3,7 @@ package ru.vocabulary.model
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 
@@ -11,6 +12,9 @@ interface WordDao {
 
     @Insert
     fun insert(word: Word)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertAll(words: List<Word>)
 
     @Update
     fun update(word: Word)

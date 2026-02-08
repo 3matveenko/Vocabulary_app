@@ -24,6 +24,12 @@
             android:name=".activity.AddActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.BatchAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PreviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
