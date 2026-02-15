@@ -22,6 +22,9 @@ class AddActivity : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels { ViewModelFactory(AppDatabase.getInstance(applicationContext).wordDao()) }
     private var wordToUpdate: Word? = null
 
+    // Regex to check for any Cyrillic characters
+    private val cyrillicRegex = Regex("[А-яЁё]")
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +34,8 @@ class AddActivity : AppCompatActivity() {
         val editEn = findViewById<EditText>(R.id.editEn)
         val addButton = findViewById<Button>(R.id.add)
 
-        val wordId = intent.getIntExtra("EXTRA_WORD_ID", -1)
-        val isUpdateMode = wordId != -1
+        val wordId = intent.getLongExtra("EXTRA_WORD_ID", -1L)
+        val isUpdateMode = wordId != -1L
 
         if (isUpdateMode) {
             addButton.text = "Обновить"
@@ -49,23 +52,39 @@ class AddActivity : AppCompatActivity() {
         }
 
         addButton.setOnClickListener {
-            val wordRu = editRu.text.toString().trim()
-            val wordEn = editEn.text.toString().trim()
+            val input1 = editRu.text.toString().trim()
+            val input2 = editEn.text.toString().trim()
 
-            if (wordRu.isBlank() || wordEn.isBlank()) {
+            if (input1.isBlank() || input2.isBlank()) {
                 Toast.makeText(this, "Поля должны быть заполнены!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
+            val ruWord: String
+            val enWord: String
+
+            val input1HasCyrillic = cyrillicRegex.containsMatchIn(input1)
+            val input2HasCyrillic = cyrillicRegex.containsMatchIn(input2)
+
+            // Swap only if the second input is clearly Russian and the first is not.
+            if (!input1HasCyrillic && input2HasCyrillic) {
+                ruWord = input2
+                enWord = input1
+            } else {
+                // In all other cases (ru/en, ru/ru, en/en), save as is.
+                ruWord = input1
+                enWord = input2
+            }
+
             if (isUpdateMode) {
                 wordToUpdate?.let {
-                    val updatedWord = it.copy(ru = wordRu, en = wordEn)
+                    val updatedWord = it.copy(ru = ruWord, en = enWord)
                     viewModel.update(updatedWord)
                     Toast.makeText(this, "Слово обновлено", Toast.LENGTH_LONG).show()
                     finish()
                 }
             } else {
-                val newWord = Word(ru = wordRu, en = wordEn, date = System.currentTimeMillis())
+                val newWord = Word(ru = ruWord, en = enWord, date = System.currentTimeMillis())
                 viewModel.insertWord(newWord)
                 Toast.makeText(this, "Слово успешно добавлено", Toast.LENGTH_LONG).show()
                 editEn.text.clear()

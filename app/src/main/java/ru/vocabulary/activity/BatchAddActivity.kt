@@ -14,6 +14,7 @@ import ru.vocabulary.model.WordPair
 class BatchAddActivity : AppCompatActivity() {
 
     private lateinit var batchEditText: EditText
+    private val cyrillicRegex = Regex("[А-яЁё]")
 
     private val previewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         result ->
@@ -44,13 +45,22 @@ class BatchAddActivity : AppCompatActivity() {
         val lines = text.split("\n")
 
         for (line in lines) {
-            // Correctly escaped regex for Kotlin
             val parts = line.split(Regex("\\s*[-—]\\s*"))
             if (parts.size == 2) {
-                val ru = parts[0].trim()
-                val en = parts[1].trim()
-                if (ru.isNotBlank() && en.isNotBlank()) {
-                    pairs.add(WordPair(ru, en))
+                val part1 = parts[0].trim()
+                val part2 = parts[1].trim()
+
+                if (part1.isNotBlank() && part2.isNotBlank()) {
+                    val part1HasCyrillic = cyrillicRegex.containsMatchIn(part1)
+                    val part2HasCyrillic = cyrillicRegex.containsMatchIn(part2)
+
+                    // Swap only if the second part is clearly Russian and the first is not.
+                    if (!part1HasCyrillic && part2HasCyrillic) {
+                         pairs.add(WordPair(ru = part2, en = part1))
+                    } else {
+                        // In all other cases (ru/en, ru/ru, en/en), save as is.
+                        pairs.add(WordPair(ru = part1, en = part2))
+                    }
                 }
             }
         }

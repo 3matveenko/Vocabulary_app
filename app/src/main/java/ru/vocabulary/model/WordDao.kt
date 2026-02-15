@@ -23,7 +23,7 @@ interface WordDao {
     fun delete(word: Word)
 
     @Query("SELECT * FROM words WHERE id = :id")
-    fun getWordById(id: Int): Word?
+    fun getWordById(id: Long): Word?
 
     @Query("SELECT COUNT(*) FROM words")
     fun count():Int
