@@ -18,7 +18,7 @@ class BatchAddActivity : AppCompatActivity() {
 
     private val previewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             batchEditText.text.clear()
         }
     }
